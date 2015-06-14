@@ -10,7 +10,7 @@ describe Resque::Plugins::CloudwatchMonitor do
 
     @metric_data = {
         metric_name: 'Failure',
-        dimensions: [{name: 'Error', value: 'Exception'}],
+        dimensions: [],
         timestamp: Time.now.iso8601,
         value: 1,
         unit: 'Count'
@@ -40,11 +40,9 @@ describe Resque::Plugins::CloudwatchMonitor do
 
     # allow(FailureJobTest).to receive(:dimensions) {[{name: 'Custom', value: 'fail'}] }
 
-    @metric_data[:dimensions] = [{name: 'Custom', value: 'fail'}] + @metric_data[:dimensions]
-
     expect(Resque::Plugins::CloudwatchMonitor::Configuration.cloudwatch_client).
         to receive(:put_metric_data).
-        with(namespace: 'Resque Failures', metric_data: [@metric_data])
+        with(namespace: 'Resque Failures', metric_data: [@metric_data.merge(dimensions: [{name: 'Custom', value: 'fail'}]), @metric_data])
 
     Resque.enqueue(FailureJobTest, :fail)
     CloudWatchMonitorTest.perform_enqueued_job(@worker)

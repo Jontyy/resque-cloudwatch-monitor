@@ -4,7 +4,7 @@ module Resque
 			module Configuration
 				class << self
 
-					attr_accessor :namespace, :cloudwatch_client, :error_dimension_name
+					attr_accessor :namespace, :cloudwatch_client
 
 					def configure
 						yield self

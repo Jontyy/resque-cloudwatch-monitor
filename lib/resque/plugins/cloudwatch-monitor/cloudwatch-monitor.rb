@@ -10,7 +10,7 @@ module Resque
 
       #Cloudwatch metric name
       def metric_name
-        @queue
+        @queue || queue
       end
 
       #Array of dimensions for Cloudwatch
@@ -37,7 +37,6 @@ module Resque
       def on_failure(e, *args)
 
         dimensions = dimensions(*args)
-        dimensions << {name: Configuration.error_dimension_name, value: e.class.to_s} if Configuration.error_dimension_name
 
         metric_data = {
           metric_name: metric_name.to_s,
@@ -47,7 +46,10 @@ module Resque
           unit: unit.to_s
         }
 
-        Configuration.cloudwatch_client.put_metric_data(namespace: namespace, metric_data: [metric_data])
+        #Send to metrics. One general of the queue and another one with dimensions if custom dimensions
+        metrics_to_send = dimensions.empty? ? [metric_data] : [metric_data, metric_data.merge(dimensions: [])]
+
+        Configuration.cloudwatch_client.put_metric_data(namespace: namespace, metric_data: metrics_to_send)
       end
     end
   end

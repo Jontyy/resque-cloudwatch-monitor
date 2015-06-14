@@ -17,7 +17,6 @@ end
 Resque::Plugins::CloudwatchMonitor::Configuration.configure do |config|
   config.namespace = 'Resque Failures'
   config.cloudwatch_client = AWS::CloudWatch::Client.new
-  config.error_dimension_name = 'Error'
 end
 
 class FailureJobTest
