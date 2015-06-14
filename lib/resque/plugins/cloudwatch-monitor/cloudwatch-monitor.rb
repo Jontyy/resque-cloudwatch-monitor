@@ -43,7 +43,7 @@ module Resque
           metric_name: metric_name.to_s,
           dimensions: dimensions,
           timestamp: timestamp,
-          value: 1,
+          value: value,
           unit: unit.to_s
         }
 
