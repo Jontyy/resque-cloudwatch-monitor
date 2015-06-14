@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.license             = 'MIT'
 
   s.add_dependency 'resque', '~> 1.25'
-  s.add_dependency 'aws-sdk'
   s.add_development_dependency 'rake', '~> 10.3'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'timecop'
+  s.add_development_dependency 'aws-sdk', '~> 1.11.1'
+  s.add_development_dependency 'rspec', '~> 3.3.0'
+  s.add_development_dependency 'timecop', '~> 0.7.4'
 end
