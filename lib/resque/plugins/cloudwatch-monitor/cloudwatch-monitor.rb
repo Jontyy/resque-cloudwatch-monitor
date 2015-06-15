@@ -39,11 +39,11 @@ module Resque
         dimensions = dimensions(*args)
 
         metric_data = {
-          metric_name: metric_name.to_s,
-          dimensions: dimensions,
-          timestamp: timestamp,
-          value: value,
-          unit: unit.to_s
+            metric_name: metric_name.to_s,
+            dimensions: dimensions,
+            timestamp: timestamp,
+            value: value,
+            unit: unit.to_s
         }
 
         #Send to metrics. One general of the queue and another one with dimensions if custom dimensions
