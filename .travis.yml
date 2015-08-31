@@ -1,0 +1,10 @@
+language: ruby
+services: redis
+cache: bundler
+rvm:
+- 2.0.0
+- 1.9.3
+- 2.2.1
+- ruby-head
+- jruby-19mode
+- rbx-2

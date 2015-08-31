@@ -1,5 +1,6 @@
 resque-cloudwatch-monitor
 ============
+[![Build Status](https://travis-ci.org/YotpoLtd/resque-cloudwatch-monitor.svg)](https://travis-ci.org/YotpoLtd/resque-cloudwatch-monitor)
 
 A [Resque][rq] plugin. Requires Resque ~> 1.25
 

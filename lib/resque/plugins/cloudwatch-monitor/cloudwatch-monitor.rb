@@ -8,6 +8,16 @@ module Resque
         Configuration.namespace
       end
 
+      #Cloudwatch Custom Metric Namespace For Failed Jobs
+      def fail_namespace
+        Configuration.fail_namespace
+      end
+
+      #Cloudwatch Custom Metric Namespace For Before Performed Jobs
+      def perform_namespace
+        Configuration.perform_namespace
+      end
+
       #Cloudwatch metric name
       def metric_name
         @queue || queue
@@ -34,10 +44,18 @@ module Resque
       end
 
       #Job on failure hook. receives the job arguments and the exception
-      def on_failure(e, *args)
+      def on_failure_report_cw(e, *args)
+        report_dimensions = dimensions(*args)
+        report(fail_namespace, metric_name, report_dimensions)
+      end
 
-        dimensions = dimensions(*args)
+      def before_perform_report_cw(*args)
+        report_dimensions = dimensions(*args)
+        report(perform_namespace, metric_name, report_dimensions)
+      end
 
+      private
+      def report(report_namespace, metric_name, dimensions)
         metric_data = {
             metric_name: metric_name.to_s,
             dimensions: dimensions,
@@ -45,11 +63,11 @@ module Resque
             value: value,
             unit: unit.to_s
         }
-
+        report_namespace ||= namespace
         #Send to metrics. One general of the queue and another one with dimensions if custom dimensions
         metrics_to_send = dimensions.empty? ? [metric_data] : [metric_data, metric_data.merge(dimensions: [])]
 
-        Configuration.cloudwatch_client.put_metric_data(namespace: namespace, metric_data: metrics_to_send)
+        Configuration.cloudwatch_client.put_metric_data(namespace: report_namespace, metric_data: metrics_to_send)
       end
     end
   end

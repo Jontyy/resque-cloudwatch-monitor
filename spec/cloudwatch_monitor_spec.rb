@@ -9,7 +9,7 @@ describe Resque::Plugins::CloudwatchMonitor do
     Timecop.freeze(Time.now)
 
     @metric_data = {
-        metric_name: 'Failure',
+        metric_name: 'FailingQueue',
         dimensions: [],
         timestamp: Time.now.iso8601,
         value: 1,
@@ -51,7 +51,13 @@ describe Resque::Plugins::CloudwatchMonitor do
   it 'successful job does not send a metric to cloudwatch' do
     expect(Resque::Plugins::CloudwatchMonitor::Configuration.cloudwatch_client).
         to receive(:put_metric_data).
-        exactly(0).times
+        with(namespace: 'Resque Perform',  metric_data: [{
+                                                                      metric_name: 'SuccessfulQueue',
+                                                                      dimensions: [],
+                                                                      timestamp: Time.now.iso8601,
+                                                                      value: 1,
+                                                                      unit: 'Count'
+                                                                  }])
 
     Resque.enqueue(SuccessJobTest, :success)
     CloudWatchMonitorTest.perform_enqueued_job(@worker)
