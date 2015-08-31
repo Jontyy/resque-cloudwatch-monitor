@@ -1,5 +1,8 @@
 resque-cloudwatch-monitor
 ============
+[![Build Status](https://travis-ci.org/YotpoLtd/resque-cloudwatch-monitor.svg)](https://travis-ci.org/YotpoLtd/resque-cloudwatch-monitor)
+[![Code Climate](https://codeclimate.com/github/YotpoLtd/resque-cloudwatch-monitor/badges/gpa.svg)](https://codeclimate.com/github/YotpoLtd/resque-cloudwatch-monitor)
+[![Test Coverage](https://codeclimate.com/github/YotpoLtd/resque-cloudwatch-monitor/badges/coverage.svg)](https://codeclimate.com/github/YotpoLtd/resque-cloudwatch-monitor/coverage)
 
 A [Resque][rq] plugin. Requires Resque ~> 1.25
 
