@@ -16,3 +16,6 @@ deploy:
   on:
     repo: YotpoLtd/resque-cloudwatch-monitor
     branch: master
+addons:
+  code_climate:
+    repo_token: 04c55ed7fd0d49449f45a998ec01cc5dc8ca843c74055ba8ee02df2955508ca8

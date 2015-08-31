@@ -1,3 +1,5 @@
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 require 'aws'
 require 'timecop'
 require 'resque-cloudwatch-monitor'
