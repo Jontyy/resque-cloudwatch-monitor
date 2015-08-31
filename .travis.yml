@@ -8,3 +8,11 @@ rvm:
 - ruby-head
 - jruby-19mode
 - rbx-2
+deploy:
+  provider: rubygems
+  api_key:
+    secure: kbZFz5HZeYOGye64YmH5v0sStQMZY94NDoAZl7LFhQ0CAPATme5xsJggL5ev8bbgv3X0TyMXFR07EJCP/MiCBAZLkSr8Ag6YS6mNR8DQ0v69XUBIDakv/bVqMhwT1K3lvxjVayLxl1fpENFuvDXRmCCko1EBFeyWrqihvupzKsXjT8lbmAQAGL+ZbMUS4wSCHSffzNtvSrWE4crHCkLKhU9Ew5U9LJXoELGFWnq6dL8HZN0NXy7U70GTxLEXYpeoWHCdRXHDpH+0fqYCJktMnyPqisqbttaO8+Yfq1FzutQ9YKQaPrTrAE2v9Krhgak69ggHMVw4lA2E+FDKd6xXbA0E0mNrN7L4X8SPNn9ifYujEgfP4R5cXNWxmbLvZrgjLMC+PzKJHFqZTGpwFmpAAjeKjlUoNGcyugAhjFb5eldNLsUN/3I/lrKfwyQ+WVzEZJaLfzfT4evykuxS8UajXtwvvh7CcOALkRkmfQW5sBXN/b7uhkaRtQgKFpNjaWpBT+jZcKD4XbahIzhmzsl+WHohRW2bJf+s7tmT/4Md6Duzjb+gJ1t4HVzHclfFbOF2F+Brj6JC+/6fDaxrYoeeC4pAJlTBjXArNdaEijzAEPfqG9cown2/v4LdSRoBjy3mLEtgWtXvUSxaAgTu/BqR59bfg/27zgA7+8E32TNJMfM=
+  gem: resque-cloudwatch-monitor
+  on:
+    repo: YotpoLtd/resque-cloudwatch-monitor
+    branch: master
