@@ -55,17 +55,19 @@ module Resque
       end
 
       private
-      def report(report_namespace, metric_name, dimensions)
+      def report(report_namespace, metric_name, report_dimensions)
+        report_dimensions ||= []
+        report_dimensions.delete_if{|key| key[:value].nil? || key[:name].nil? }
         metric_data = {
             metric_name: metric_name.to_s,
-            dimensions: dimensions,
+            dimensions: report_dimensions,
             timestamp: timestamp,
             value: value,
             unit: unit.to_s
         }
         report_namespace ||= namespace
         #Send to metrics. One general of the queue and another one with dimensions if custom dimensions
-        metrics_to_send = dimensions.empty? ? [metric_data] : [metric_data, metric_data.merge(dimensions: [])]
+        metrics_to_send = report_dimensions.empty? ? [metric_data] : [metric_data, metric_data.merge(dimensions: [])]
 
         Configuration.cloudwatch_client.put_metric_data(namespace: report_namespace, metric_data: metrics_to_send)
       end
