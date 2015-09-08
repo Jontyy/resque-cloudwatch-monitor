@@ -3,19 +3,12 @@ module Resque
 
     module CloudwatchMonitor
 
-      #Cloudwatch Custom Metric Namespace
-      def namespace
-        Configuration.namespace
+      def get_namespace(type)
+        Configuration.get_namespace_for(type)
       end
 
-      #Cloudwatch Custom Metric Namespace For Failed Jobs
-      def fail_namespace
-        Configuration.fail_namespace
-      end
-
-      #Cloudwatch Custom Metric Namespace For Before Performed Jobs
-      def perform_namespace
-        Configuration.perform_namespace
+      def should_report?(type)
+        Configuration.should_report?(type)
       end
 
       #Cloudwatch metric name
@@ -43,19 +36,16 @@ module Resque
         1
       end
 
-      #Job on failure hook. receives the job arguments and the exception
-      def on_failure_report_cw(e, *args)
-        report_dimensions = dimensions(*args)
-        report(fail_namespace, metric_name, report_dimensions)
-      end
-
-      def before_perform_report_cw(*args)
-        report_dimensions = dimensions(*args)
-        report(perform_namespace, metric_name, report_dimensions)
+      Configuration.event_list.each do |type|
+        define_method("#{type}_report_cw") do |e, *args|
+          report(type, *args)
+        end
       end
 
       private
-      def report(report_namespace, metric_name, report_dimensions)
+      def report(type, *args)
+        return unless should_report?(type)
+        report_dimensions = dimensions(*args)
         report_dimensions ||= []
         report_dimensions.delete_if{|key| key[:value].nil? || key[:name].nil? }
         metric_data = {
@@ -65,7 +55,7 @@ module Resque
             value: value,
             unit: unit.to_s
         }
-        report_namespace ||= namespace
+        report_namespace = get_namespace(type)
         #Send to metrics. One general of the queue and another one with dimensions if custom dimensions
         metrics_to_send = report_dimensions.empty? ? [metric_data] : [metric_data, metric_data.merge(dimensions: [])]
 
