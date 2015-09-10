@@ -17,9 +17,13 @@ class CloudWatchMonitorTest
 end
 
 Resque::Plugins::CloudwatchMonitor::Configuration.configure do |config|
-  config.namespace = 'Resque Monitor'
-  config.fail_namespace = 'Resque Failures'
-  config.perform_namespace = 'Resque Perform'
+  config.set_namespace_for(:on_failure, 'Resque Failures')
+  config.set_namespace_for(:after_perform, 'Resque Success')
+  config.set_namespace_for(:before_perform, 'Resque Perform')
+  config.report_on(:on_failure)
+  config.report_on(:after_perform)
+  config.report_on(:before_perform)
+
   config.cloudwatch_client = AWS::CloudWatch::Client.new
 end
 
